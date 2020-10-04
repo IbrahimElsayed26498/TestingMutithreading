@@ -1,23 +1,19 @@
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 // In this case the compiler treats Main as a thread class.
-public class Main extends Thread{
-    public void run(){
-        if (Thread.currentThread().isDaemon()){
-            System.out.println("Daemon Thread: "
-                    + currentThread().getName());
-        }else{
-            System.out.println("User thread: " +
-                    currentThread().getName());
-        }
-    }
+public class Main{
+
     public static void main(String[] args) {
-        Main m = new Main();
-        Main m2 = new Main();
+        ExecutorService executorService =
+                Executors.newFixedThreadPool(5);
 
-        m.setDaemon(true);
-        m.start();
-
-        m2.start();
+        for (int i = 0; i < 10; i++) {
+            Runnable threadPool = new ThreadPool("th"+i);
+            executorService.execute(threadPool);
+        }
+        executorService.shutdown();
+        while (!executorService.isTerminated()){}
+        System.out.println("Your task is finished");
     }
 }
