@@ -5,7 +5,7 @@ public class Main extends Thread{
     public void run(){
         for(int i=0; i<10; i++){
             try {
-                Thread.sleep(100);
+                Thread.sleep(300);
                 System.out.println( Thread.currentThread().getName() +"  "+ i);
             } catch (InterruptedException e) {
                 System.out.println(e.getMessage());
@@ -19,7 +19,8 @@ public class Main extends Thread{
 
         m.start();
         try {
-            m.join();
+            m.join(1000); //m thread will run alone for 1000 ms,
+                                // then it will be with the other two threads.
             System.out.println("(m) Thread object Finished.");
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
