@@ -18,12 +18,14 @@ public class Main implements Runnable{
             Thread th1 = new Thread(parentGroup, this);
             System.out.printf("Starting %s .....\n",
                     th1.getName());
+            th1.setPriority(Thread.MAX_PRIORITY); // set priority to max
             th1.start();
 
             // create another thread
             Thread th2 = new Thread(childGroup, this);
             System.out.printf("Starting %s .....\n",
                     th2.getName());
+            th2.setPriority(Thread.MIN_PRIORITY); // set priority to minimum
             th2.start();
 
             System.out.println("No threading");
