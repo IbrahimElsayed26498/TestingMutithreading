@@ -1,19 +1,57 @@
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-// In this case the compiler treats Main as a thread class.
-public class Main{
+public class Main implements Runnable{
 
     public static void main(String[] args) {
-        ExecutorService executorService =
-                Executors.newFixedThreadPool(5);
+        new Main().fun();
+    }
+    public void fun(){
+        try{
+            // create a parent group
+            ThreadGroup parentGroup =
+                    new ThreadGroup("Parent Group");
 
-        for (int i = 0; i < 10; i++) {
-            Runnable threadPool = new ThreadPool("th"+i);
-            executorService.execute(threadPool);
+            // create a child group
+            ThreadGroup childGroup =
+                    new ThreadGroup("Child Group");
+
+            // create a thread
+            Thread th1 = new Thread(parentGroup, this);
+            System.out.printf("Starting %s .....\n",
+                    th1.getName());
+            th1.start();
+
+            // create another thread
+            Thread th2 = new Thread(childGroup, this);
+            System.out.printf("Starting %s .....\n",
+                    th2.getName());
+            th2.start();
+
+            System.out.println("No threading");
+
+            // display the number of active threads
+            System.out.printf("Active threads in \"%s\" is %d\n",
+                    parentGroup.getName(), parentGroup.activeCount());
+            System.out.printf("Active threads in \"%s\" is %d\n",
+                    childGroup.getName(), childGroup.activeCount());
+            // block until the other threads finished
+            th2.join();
+            th1.join();
+
+        }catch (InterruptedException e){
+            System.out.println("e.getMessage() = " + e.getMessage());
         }
-        executorService.shutdown();
-        while (!executorService.isTerminated()){}
-        System.out.println("Your task is finished");
+    }
+    public void run(){
+        for (int i = 0; i < 100; i++) {
+            try{
+                System.out.println(Thread.currentThread().getName() + " "+i);
+                Thread.sleep(10);
+            }catch (InterruptedException e){
+                System.out.println(e.getMessage());
+            }
+            i++;
+        }
+        System.out.printf("Thread \"%s\" finished executing\n",
+                Thread.currentThread().getName());
     }
 }
