@@ -39,6 +39,13 @@ public class Main implements Runnable{
             th2.join();
             th1.join();
 
+            // destroy all threads inside the group
+            parentGroup.destroy();
+            System.out.println(parentGroup.getName() + " destroyed.");
+
+            childGroup.destroy();
+            System.out.println(childGroup.getName() + " destroyed.");
+
         }catch (InterruptedException e){
             System.out.println("e.getMessage() = " + e.getMessage());
         }
