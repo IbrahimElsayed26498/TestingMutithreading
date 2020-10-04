@@ -3,30 +3,21 @@
 // In this case the compiler treats Main as a thread class.
 public class Main extends Thread{
     public void run(){
-        for(int i=0; i<10; i++){
-            try {
-                Thread.sleep(300);
-                System.out.println( Thread.currentThread().getName() +"  "+ i);
-            } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-            }
-        }
+        System.out.println(Thread.currentThread().getName());
+        System.out.println(Thread.currentThread().getPriority());
     }
     public static void main(String[] args) {
         Main m = new Main();
         Main m2 = new Main();
-        Main m3 = new Main();
+
+        System.out.println("m = " + m.getName() + "(10)");
+        System.out.println("m2 = " + m2.getName() + "(5)");
+        System.out.println();
+
+        m.setPriority(10);
+        m2.setPriority(5);
 
         m.start();
-        try {
-            m.join(1000); //m thread will run alone for 1000 ms,
-                                // then it will be with the other two threads.
-            System.out.println("(m) Thread object Finished.");
-        } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-
         m2.start();
-        m3.start();
     }
 }
