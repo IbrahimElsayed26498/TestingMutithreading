@@ -43,6 +43,7 @@ public class Main implements Runnable{
             parentGroup.destroy();
             System.out.println(parentGroup.getName() + " destroyed.");
 
+
             childGroup.destroy();
             System.out.println(childGroup.getName() + " destroyed.");
 
@@ -51,14 +52,24 @@ public class Main implements Runnable{
         }
     }
     public void run(){
-        for (int i = 0; i < 100; i++) {
+        fun2();
+    }
+    synchronized public void fun2(){
+
+        for (int i = 0; i < 10; i++) {
             try{
                 System.out.println(Thread.currentThread().getName() + " "+i);
-                Thread.sleep(10);
+                Thread.sleep(1000);
             }catch (InterruptedException e){
                 System.out.println(e.getMessage());
             }
             i++;
+        }
+
+        try{
+            Thread.sleep(5000);
+        }catch (InterruptedException e){
+            System.out.println(e.getMessage());
         }
         System.out.printf("Thread \"%s\" finished executing\n",
                 Thread.currentThread().getName());
